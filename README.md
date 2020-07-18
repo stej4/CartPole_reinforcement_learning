@@ -22,8 +22,8 @@ The goal of my project was to learn the basics of reinforcement learning.</p>
 
 1. Clone this copy to your local disk
 ```
-$ git clone https://github.com/steyerj/robotic-inverted-pendulum.git
-$cd robotic-inverted-pendulum
+$ git clone https://github.com/steyerj/inverted-pendulum-balancing-robot.git
+$cd inverted-pendulum-balancing-robot
 ```
 
 2. Install dependecies
@@ -120,9 +120,9 @@ It is possible to modify the hyperparameters of the algorithm by modifying the v
 
 ```python
 #Settings for Qlearning's algorithm
-learning_rate=0.6
-gamma=0.99
-iteration=700
+learning_rate = 0.6
+gamma = 0.99
+iteration = 700
 ```
 
 
@@ -132,23 +132,23 @@ Some passages have been modified so that you have direct access to the equations
 
 ```python
 #Settings for Qlearning's algorithm
-self.X=np.linspace(-self.x_limit, self.x_limit, self.nb_discretisation_x)
-self.X_dot=np.linspace(-self.x_dot_limit, self.x_dot_limit, self.nb_discretisation_x_dot)
-self.THETA=np.linspace(-self.theta_limit, self.theta_limit, self.nb_discretisation_theta)
-self.THETA_dot=np.linspace(-self.theta_dot_limit, self.theta_dot_limit, self.nb_discretisation_theta_dot)
+self.X = np.linspace(-self.x_limit, self.x_limit, self.nb_discretisation_x)
+self.X_dot = np.linspace(-self.x_dot_limit, self.x_dot_limit, self.nb_discretisation_x_dot)
+self.THETA = np.linspace(-self.theta_limit, self.theta_limit, self.nb_discretisation_theta)
+self.THETA_dot = np.linspace(-self.theta_dot_limit, self.theta_dot_limit, self.nb_discretisation_theta_dot)
 ```
 
 Several variables are also very important for environmental modeling, including the declaration of reward zone boundaries, the value of associated rewards, and the number of discretization states.
 
 ```python
 #Settings for borders
-self.x_limit= 1                         #maximum position
-self.theta_limit= 40 * 2 * m.pi / 360   #maximum angle
-self.x_dot_limit=15                     #maximum linear velocity
-self.theta_dot_limit=15                 #maximum angular velocity
+self.x_limit = 1                         #maximum position
+self.theta_limit= 40 * 2 * pi / 360   #maximum angle
+self.x_dot_limit = 15                     #maximum linear velocity
+self.theta_dot_limit = 15                 #maximum angular velocity
 #Others settings
-self.nb_discretisation=11           #number of discretisation for each of the 4 states
-self.Recompenses=[-10000,0,0,100]   #reward for [near to border, neutral, vertical pole, vertical pole and cart in the center]
+self.nb_discretisation = 11           #number of discretisation for each of the 4 states
+self.Recompenses=[-10000, 0, 0, 100]   #reward for [near to border, neutral, vertical pole, vertical pole and cart in the center]
 ```
 
 
@@ -162,12 +162,11 @@ Some lines present additional instructions, they have only a technical use, eith
 The only passage with a different logic is the one allowing the application of the exploration/exploitation principle.
 
 ```python
-##Choose A from S using
- import random as r
- if r.random()<fct_exploration(i):
-      #random action
-     a=r.randint(0,n_actions-1)
- else:
-      #follow policy
-     a=np.argmax(Q[s[0],s[1],s[2],s[3],:])
+##'Choose A from S using ...'
+if random() < exploration_function(iteration):
+     #ADDED: features to encourage erratic behavior
+     action = randint(0, number_action-1)
+else:
+     ##'policy derived from Q'
+     action = np.argmax(Q[statut[0], statut[1], statut[2], statut[3]])
 ```
